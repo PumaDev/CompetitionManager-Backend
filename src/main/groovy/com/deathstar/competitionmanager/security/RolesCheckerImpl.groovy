@@ -14,7 +14,7 @@ class RolesCheckerImpl implements RolesChecker {
 
     @Override
     boolean hasUserAccessToEndpoint(List<UserRole> roles, String xAuthToken) {
-        AccessToken accessToken = accessTokenService.findByToken(xAuthToken)
+        AccessToken accessToken = xAuthToken ? accessTokenService.findByToken(xAuthToken) : null
         return accessToken && roles.contains(accessToken.user.userRole)
     }
 }

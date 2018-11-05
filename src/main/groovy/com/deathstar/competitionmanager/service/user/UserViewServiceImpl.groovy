@@ -28,16 +28,6 @@ class UserViewServiceImpl implements UserViewService {
     }
 
     @Override
-    UserView login(String login, String password) {
-        String enctyptedEnteredPassword = passwordEncrypter.hashPassword(new User(login: login, password: password))
-        User foundUserInSystem = userService.findByLogin(login)
-        if (foundUserInSystem.password != enctyptedEnteredPassword) {
-            throw new Exception('Login failed')
-        }
-        return userConverter.convertToView(foundUserInSystem)
-    }
-
-    @Override
     List<UserView> findUsersByActivateStatus(ActivateStatus activateStatus) {
         List<User> users = userService.findUsersByActivateStatus(activateStatus)
         return userConverter.convertToViews(users)

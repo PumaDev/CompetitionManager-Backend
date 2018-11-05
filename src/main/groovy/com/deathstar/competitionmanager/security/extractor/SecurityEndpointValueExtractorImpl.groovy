@@ -15,14 +15,7 @@ class SecurityEndpointValueExtractorImpl implements SecurityEndpointValueExtract
     UserRole[] extractUserRoles(ProceedingJoinPoint pjp) {
         MethodSignature signature = pjp.signature as MethodSignature
         Method realMethod = pjp.target.class.getMethod(signature.method.name, signature.method.parameterTypes)
-
         SecurityEndpoint securityEndpoint = realMethod.getAnnotation(SecurityEndpoint)
-
-        if (!securityEndpoint) {
-            throw new Exception("Method ${realMethod.name} of class ${pjp.target.class.name} " +
-                    "should have ${SecurityEndpoint.class.name} annotation")
-        }
-
-        return securityEndpoint.rolesHasAccess
+        return securityEndpoint.rolesHasAccess()
     }
 }

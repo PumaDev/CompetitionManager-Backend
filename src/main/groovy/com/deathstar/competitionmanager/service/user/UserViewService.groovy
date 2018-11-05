@@ -8,8 +8,6 @@ interface UserViewService {
 
     UserView register(CreateUserView createUserView)
 
-    UserView login(String login, String password)
-
     List<UserView> findUsersByActivateStatus(ActivateStatus activateStatus)
 
     List<UserView> getAllUsers()

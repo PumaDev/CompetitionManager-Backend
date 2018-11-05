@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 @Component
 class AuthTokenExtractorImpl implements AuthTokenExtractor {
 
-    @Value('${com.ds.competition-manager.x-auth-token.header-name}')
+    @Value('${com.ds.competition-manager.x-auth-token.header-name:X-Auth-Token}')
     String xAuthTokenHeaderName
 
     @Autowired

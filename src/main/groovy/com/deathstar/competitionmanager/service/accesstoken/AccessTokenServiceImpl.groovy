@@ -1,5 +1,6 @@
 package com.deathstar.competitionmanager.service.accesstoken
 
+
 import com.deathstar.competitionmanager.domain.AccessToken
 import com.deathstar.competitionmanager.repository.AccessTokenRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +19,7 @@ class AccessTokenServiceImpl implements AccessTokenService {
     AccessTokenRepository accessTokenRepository
 
     @Override
-    AccessToken create(AccessToken accessToken) {
+    AccessToken save(AccessToken accessToken) {
         accessToken.expiresTime = Instant.now().plusSeconds(tokenLifeLength)
         return accessTokenRepository.save(accessToken)
     }
@@ -26,6 +27,11 @@ class AccessTokenServiceImpl implements AccessTokenService {
     @Override
     AccessToken findByToken(String token) {
         return accessTokenRepository.findOne(token)
+    }
+
+    @Override
+    List<AccessToken> getAll() {
+        return accessTokenRepository.findAll()
     }
 
     @Override
@@ -38,5 +44,10 @@ class AccessTokenServiceImpl implements AccessTokenService {
     @Override
     void delete(String token) {
         accessTokenRepository.delete(token)
+    }
+
+    @Override
+    void deleteAll(List<AccessToken> accessTokens) {
+        accessTokenRepository.delete(accessTokens as Iterable<AccessToken>)
     }
 }

@@ -16,6 +16,7 @@ class UserConverter {
                     id: domainEntity.id,
                     login: domainEntity.login,
                     mail: domainEntity.mail,
+                    clubName: domainEntity.clubName,
                     activateStatus: domainEntity.activateStatus,
                     userRole: domainEntity.userRole
             )
@@ -31,7 +32,8 @@ class UserConverter {
         return new User(
                 login: createUserView.login,
                 mail: createUserView.mail,
-                password: createUserView.password
+                password: createUserView.password,
+                clubName: createUserView.clubName
         )
     }
 

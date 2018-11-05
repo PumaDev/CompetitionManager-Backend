@@ -7,7 +7,7 @@ import javax.persistence.*
 import java.time.Instant
 
 @Entity
-@Table
+@Table(name = 'access_token')
 class AccessToken {
 
     @Id
