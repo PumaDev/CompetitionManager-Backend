@@ -16,17 +16,26 @@ class CompetitionCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = 'id')
-    String id
+    Integer id
 
-    @ManyToOne
-    @JoinColumn(name = 'weight_category', nullable = false)
-    WeightCategory weightCategory
+    @Column(name = 'display_name', nullable = false)
+    String displayName
 
-    @ManyToOne
-    @JoinColumn(name = 'experience_category', nullable = false)
-    ExperienceCategory experienceCategory
+    @Column(name = 'lower_age', nullable = true)
+    Integer lowerAge
 
-    @ManyToOne
-    @JoinColumn(name = 'age_category', nullable = false)
-    AgeCategory ageCategory
+    @Column(name = 'upper_age', nullable = true)
+    Integer upperAge
+
+    @Column(name = 'lower_weight', nullable = true)
+    Integer lowerWeight
+
+    @Column(name = 'upper_weight', nullable = true)
+    Integer upperWeight
+
+    @Column(name = 'lower_experience', nullable = true)
+    Integer lowerExperience
+
+    @Column(name = 'upper_experience', nullable = true)
+    Integer upperExperience
 }
