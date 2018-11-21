@@ -6,6 +6,7 @@ import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -41,9 +42,9 @@ class Competition {
     @Column(name = 'registration_status', nullable = false)
     RegistrationStatus registrationStatus
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
     @JoinTable(name='competition_has_competition_category',
         joinColumns = [@JoinColumn(name='competition_id')],
-        inverseJoinColumns = [@JoinColumn(name='category_id')])
+        inverseJoinColumns = [@JoinColumn(name='competition_category_id')])
     Set<CompetitionCategory> categories = new HashSet<>()
 }
