@@ -6,6 +6,8 @@ interface CompetitionCategoryService {
 
     List<CompetitionCategory> readAll()
 
+    CompetitionCategory findById(Integer id)
+
     CompetitionCategory create(CompetitionCategory competitionCategory)
 
     List<CompetitionCategory> bulkCreate(List<CompetitionCategory> competitionCategories)

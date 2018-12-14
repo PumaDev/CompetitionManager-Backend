@@ -1,6 +1,7 @@
 package com.deathstar.competitionmanager.service.accesstoken
 
 import com.deathstar.competitionmanager.domain.AccessToken
+import com.deathstar.competitionmanager.domain.user.ActivateStatus
 import com.deathstar.competitionmanager.domain.user.User
 import com.deathstar.competitionmanager.service.user.PasswordEncrypter
 import com.deathstar.competitionmanager.service.user.UserService

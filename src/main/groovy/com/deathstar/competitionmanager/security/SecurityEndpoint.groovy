@@ -2,16 +2,14 @@ package com.deathstar.competitionmanager.security
 
 import com.deathstar.competitionmanager.domain.user.UserRole
 
-import java.lang.annotation.ElementType
-import java.lang.annotation.Inherited
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
-import java.lang.annotation.Target
+import java.lang.annotation.*
+
+import static com.deathstar.competitionmanager.domain.user.UserRole.*
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target([ElementType.METHOD])
 @Inherited
 @interface SecurityEndpoint {
 
-    UserRole[] rolesHasAccess()
+    UserRole[] rolesHasAccess() default [COACH, ADMIN, DEVELOPER]
 }

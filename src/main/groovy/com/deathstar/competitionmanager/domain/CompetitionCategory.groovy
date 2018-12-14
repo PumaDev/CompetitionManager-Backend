@@ -38,4 +38,7 @@ class CompetitionCategory {
 
     @Column(name = 'upper_experience', nullable = true)
     Integer upperExperience
+
+    @Column(name = 'male', nullable = true)
+    Male male
 }

@@ -2,7 +2,12 @@ package com.deathstar.competitionmanager.service.competition
 
 import com.deathstar.competitionmanager.domain.Competition
 import com.deathstar.competitionmanager.domain.RegistrationStatus
+import com.deathstar.competitionmanager.domain.user.User
+import com.deathstar.competitionmanager.domain.user.UserRole
 import com.deathstar.competitionmanager.exception.EntityNotFoundException
+import com.deathstar.competitionmanager.security.CurrentUserResolver
+import com.deathstar.competitionmanager.service.sportsman.RegistratedSportsmanService
+import com.deathstar.competitionmanager.view.CompetitionMetaView
 import com.deathstar.competitionmanager.view.CompetitionView
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -21,6 +26,12 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
     @Autowired
     CompetitionConverter competitionConverter
 
+    @Autowired
+    RegistratedSportsmanService registratedSportsmanService
+
+    @Autowired
+    CurrentUserResolver currentUserResolver
+
     @Override
     CompetitionView save(CompetitionView competitionView) {
         Competition competition = competitionConverter.convertToDomainEntity(competitionView)
@@ -31,19 +42,41 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
     @Override
     CompetitionView findById(Integer id) {
         Competition foundCompetition = competitionService.findById(id)
-        return competitionConverter.convertToView(foundCompetition)
+        CompetitionView competitionView = competitionConverter.convertToView(foundCompetition)
+        fillCompetitionMetaInCompetition(currentUserResolver.getCurrentUser(), competitionView)
+        return competitionView
     }
 
     @Override
     Page<CompetitionView> findFeatureCompetitions(Pageable pageable) {
         Page<Competition> featureCompetitions = competitionService.findFeatureCompetitions(pageable)
-        return competitionConverter.convertToViews(featureCompetitions, pageable)
+        Page<CompetitionView> featureCompetitionsPage = competitionConverter.convertToViews(featureCompetitions, pageable)
+        fillCompetitionMetaInCompetitionsPage(currentUserResolver.getCurrentUser(), featureCompetitionsPage)
+        return featureCompetitionsPage
     }
 
     @Override
     Page<CompetitionView> findLastCompetitions(Pageable pageable) {
         Page<Competition> lastCompetitions = competitionService.findLastCompetitions(pageable)
-        return competitionConverter.convertToViews(lastCompetitions, pageable)
+        Page<CompetitionView> lastCompetitionsPage = competitionConverter.convertToViews(lastCompetitions, pageable)
+        fillCompetitionMetaInCompetitionsPage(currentUserResolver.getCurrentUser(), lastCompetitionsPage)
+        return lastCompetitionsPage
+    }
+
+    private void fillCompetitionMetaInCompetitionsPage(User currentUser, Page<CompetitionView> competitionsPage) {
+        competitionsPage.content.forEach { view ->
+            fillCompetitionMetaInCompetition(currentUser, view)
+        }
+    }
+
+    private void fillCompetitionMetaInCompetition(User currentUser, CompetitionView competitionView) {
+        competitionView.competitionMeta = new CompetitionMetaView(
+                totalCategoriesSize: competitionView.categories.size(),
+                minAgeCategory: competitionView.categories.collect { it.lowerAge }.min { it },
+                maxAgeCategory: competitionView.categories.collect { it.upperAge }.max { it },
+                totalSportsmenCount: registratedSportsmanService.findSportsmanByCompetitionId(competitionView.id).size(),
+                totalSportsmenOfCoachClubCount: currentUser.userRole == UserRole.COACH ?
+                        registratedSportsmanService.findSportsmenByClubNameAndCompetitionId(currentUser.clubName, competitionView.id).size() : null)
     }
 
     @Override

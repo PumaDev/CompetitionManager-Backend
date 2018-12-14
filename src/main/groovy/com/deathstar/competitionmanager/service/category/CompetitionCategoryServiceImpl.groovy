@@ -13,7 +13,12 @@ class CompetitionCategoryServiceImpl implements CompetitionCategoryService {
 
     @Override
     List<CompetitionCategory> readAll() {
-        return competitionCategoryRepository.findAll()
+        return competitionCategoryRepository.findAllByOrderByDisplayNameAsc()
+    }
+
+    @Override
+    CompetitionCategory findById(Integer id) {
+        return competitionCategoryRepository.findOne(id)
     }
 
     @Override

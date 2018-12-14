@@ -2,7 +2,9 @@ package com.deathstar.competitionmanager.service.user
 
 import com.deathstar.competitionmanager.domain.user.ActivateStatus
 import com.deathstar.competitionmanager.domain.user.User
+import com.deathstar.competitionmanager.exception.ConflictEntityException
 import com.deathstar.competitionmanager.view.user.CreateUserView
+import com.deathstar.competitionmanager.view.user.RegistrateResponse
 import com.deathstar.competitionmanager.view.user.UserView
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -20,11 +22,22 @@ class UserViewServiceImpl implements UserViewService {
     PasswordEncrypter passwordEncrypter
 
     @Override
-    UserView register(CreateUserView createUserView) {
+    RegistrateResponse register(CreateUserView createUserView) {
         User user = userConverter.convertCreateUserViewToUser(createUserView)
         user.password = passwordEncrypter.hashPassword(user)
-        User createdUser = userService.create(user)
-        return userConverter.convertToView(createdUser)
+        User createdUser
+        try {
+            createdUser = userService.create(user)
+        } catch (ConflictEntityException conflictEntityException) {
+            return new RegistrateResponse(
+                    success: false,
+                    errorCode: conflictEntityException.errorCode,
+                    message: conflictEntityException.message)
+        }
+        UserView createdUserView = userConverter.convertToView(createdUser)
+        return new RegistrateResponse(
+                success: true,
+                createsUser: createdUserView)
     }
 
     @Override
@@ -40,21 +53,7 @@ class UserViewServiceImpl implements UserViewService {
     }
 
     @Override
-    UserView activateUser(Integer userId) {
-        return updateUserActivateStatus(userId, ActivateStatus.ACTIVE)
-    }
-
-    @Override
-    UserView banUser(Integer userId) {
-        return updateUserActivateStatus(userId, ActivateStatus.BANNED)
-    }
-
-    @Override
-    UserView blockUser(Integer userId) {
-        return updateUserActivateStatus(userId, ActivateStatus.BLOCKED)
-    }
-
-    private UserView updateUserActivateStatus(Integer userId, ActivateStatus newActivateStatus) {
+    UserView setActivateStatusByUserId(ActivateStatus newActivateStatus, Integer userId) {
         User user = userService.getNotNullUser(userId)
         user.setActivateStatus(newActivateStatus)
         User updatesUser = userService.update(user)

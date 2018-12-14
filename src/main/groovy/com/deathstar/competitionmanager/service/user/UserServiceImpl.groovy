@@ -3,6 +3,7 @@ package com.deathstar.competitionmanager.service.user
 import com.deathstar.competitionmanager.domain.user.ActivateStatus
 import com.deathstar.competitionmanager.domain.user.User
 import com.deathstar.competitionmanager.domain.user.UserRole
+import com.deathstar.competitionmanager.exception.ConflictEntityException
 import com.deathstar.competitionmanager.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -71,7 +72,11 @@ class UserServiceImpl implements UserService {
     private validateUniqueFields(User user) {
         User existingUserByLogin = userRepository.findByLogin(user.login)
         if (existingUserByLogin && existingUserByLogin.id != user.id) {
-            throw new Exception("User with login ${user.login} exists")
+            throw new ConflictEntityException(1, "User with login `${user.login}` allready exists")
+        }
+        User existingUserByClubName = user.clubName ? userRepository.findByClubName(user.clubName) : null
+        if (existingUserByClubName && existingUserByClubName.id != user.id) {
+            throw new ConflictEntityException(2, "User with Club Name ${user.clubName} allready exists")
         }
     }
 

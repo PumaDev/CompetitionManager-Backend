@@ -29,4 +29,14 @@ class CompetitionView {
     RegistrationStatus registrationStatus
 
     List<CompetitionCategoryView> categories
+
+    CompetitionMetaView competitionMeta
+}
+
+class CompetitionMetaView {
+    int totalCategoriesSize
+    Integer minAgeCategory
+    Integer maxAgeCategory
+    int totalSportsmenCount
+    Integer totalSportsmenOfCoachClubCount
 }

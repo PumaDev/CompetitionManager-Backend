@@ -1,6 +1,7 @@
 package com.deathstar.competitionmanager.service.category
 
 import com.deathstar.competitionmanager.domain.CompetitionCategory
+import com.deathstar.competitionmanager.exception.EntityNotFoundException
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -41,5 +42,14 @@ class CompetitionCategoryViewServiceImpl implements CompetitionCategoryViewServi
     List<CompetitionCategoryView> bulkUpdate(List<CompetitionCategoryView> competitionCategoryViews) {
         List<CompetitionCategory> competitionCategories = competitionCategoryConverter.convertToDomainEntities(competitionCategoryViews)
         return competitionCategoryConverter.convertToViews(competitionCategoryService.bulkUpdate(competitionCategories))
+    }
+
+    @Override
+    CompetitionCategoryView findById(Integer id) {
+        CompetitionCategory competitionCategory = competitionCategoryService.findById(id)
+        if (!competitionCategory) {
+            throw new EntityNotFoundException()
+        }
+        return competitionCategoryConverter.convertToView(competitionCategory)
     }
 }
