@@ -3,6 +3,7 @@ package com.deathstar.competitionmanager.controller
 import com.deathstar.competitionmanager.security.SecurityEndpoint
 import com.deathstar.competitionmanager.service.category.CompetitionCategoryViewService
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
+import io.swagger.models.auth.In
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

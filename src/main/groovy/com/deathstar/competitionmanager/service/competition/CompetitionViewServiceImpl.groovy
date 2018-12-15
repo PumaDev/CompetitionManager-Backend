@@ -9,6 +9,7 @@ import com.deathstar.competitionmanager.security.CurrentUserResolver
 import com.deathstar.competitionmanager.service.sportsman.RegistratedSportsmanService
 import com.deathstar.competitionmanager.view.CompetitionMetaView
 import com.deathstar.competitionmanager.view.CompetitionView
+import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -99,12 +100,19 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
         }
 
         competition.registrationStatus = newRegistrationStatus
+        CompetitionView view = competitionConverter.convertToView(competitionService.update(competition))
+        fillCompetitionMetaInCompetition(currentUserResolver.getCurrentUser(), view)
 
-        return competitionConverter.convertToView(competitionService.update(competition))
+        return view
     }
 
     @Override
     List<CompetitionView> getAllCompetitions() {
         return competitionConverter.convertToViews(competitionService.getAllCompetitions())
+    }
+
+    @Override
+    List<CompetitionCategoryView> getCategoriesByCompetitionId(Integer competitionId) {
+        return findById(competitionId)?.categories
     }
 }

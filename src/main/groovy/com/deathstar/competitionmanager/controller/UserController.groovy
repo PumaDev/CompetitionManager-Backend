@@ -1,6 +1,7 @@
 package com.deathstar.competitionmanager.controller
 
 import com.deathstar.competitionmanager.domain.user.ActivateStatus
+import com.deathstar.competitionmanager.domain.user.User
 import com.deathstar.competitionmanager.domain.user.UserRole
 import com.deathstar.competitionmanager.security.SecurityEndpoint
 import com.deathstar.competitionmanager.service.user.UserViewService
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -45,5 +47,12 @@ class UserController {
     @GetMapping('/users')
     List<UserView> getAllUsers() {
         return userViewService.getAllUsers()
+    }
+
+    @SecurityEndpoint(rolesHasAccess = [UserRole.ADMIN])
+    @PutMapping('/users/{userId}/active-status/{activeStatus}')
+    UserView updateActiveStatus(@PathVariable('userId') Integer userId,
+                                @PathVariable('activeStatus') ActivateStatus newActiveStatus) {
+        return userViewService.setActivateStatusByUserId(newActiveStatus, userId)
     }
 }

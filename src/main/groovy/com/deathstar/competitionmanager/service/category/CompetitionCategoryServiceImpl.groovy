@@ -2,6 +2,7 @@ package com.deathstar.competitionmanager.service.category
 
 import com.deathstar.competitionmanager.domain.CompetitionCategory
 import com.deathstar.competitionmanager.repository.CompetitionCategoryRepository
+import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

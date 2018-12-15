@@ -1,6 +1,6 @@
 package com.deathstar.competitionmanager.controller
 
-import com.deathstar.competitionmanager.exception.EntityCreateFailedException
+import com.deathstar.competitionmanager.exception.CompetitionManagerException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -13,8 +13,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestController
 class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(EntityCreateFailedException)
-    ResponseEntity<EntityCreateErrorDetails> handleEntitySaveFailedException(EntityCreateFailedException exception, WebRequest webRequest) {
+    @ExceptionHandler(CompetitionManagerException)
+    ResponseEntity<EntityCreateErrorDetails> handleEntitySaveFailedException(CompetitionManagerException exception, WebRequest webRequest) {
         def errorDetails = new EntityCreateErrorDetails(errorCode: exception.errorCode, message: exception.message)
         return new ResponseEntity<EntityCreateErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST)
     }

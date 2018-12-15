@@ -2,6 +2,7 @@ package com.deathstar.competitionmanager.service.competition
 
 import com.deathstar.competitionmanager.domain.RegistrationStatus
 import com.deathstar.competitionmanager.view.CompetitionView
+import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -20,4 +21,6 @@ interface CompetitionViewService {
     CompetitionView updateRegistrationStatus(Integer competitionId, RegistrationStatus newRegistrationStatus)
 
     List<CompetitionView> getAllCompetitions()
+
+    List<CompetitionCategoryView> getCategoriesByCompetitionId(Integer competitionId)
 }

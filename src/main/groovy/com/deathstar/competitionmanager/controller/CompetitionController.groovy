@@ -5,6 +5,7 @@ import com.deathstar.competitionmanager.exception.EntityNotFoundException
 import com.deathstar.competitionmanager.security.SecurityEndpoint
 import com.deathstar.competitionmanager.service.competition.CompetitionViewService
 import com.deathstar.competitionmanager.view.CompetitionView
+import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
@@ -58,10 +59,15 @@ class CompetitionController {
     }
 
     @SecurityEndpoint(rolesHasAccess = [ADMIN])
-    @PostMapping('/competition/{competitionId}/registration/{registrationStatus}')
-    ResponseEntity<Void> updateRegistrationStatusOnCompetition(@PathVariable('competitionId') Integer competitionId,
+    @PutMapping('/competition/{competitionId}/registration/{registrationStatus}')
+    ResponseEntity<CompetitionView> updateRegistrationStatusOnCompetition(@PathVariable('competitionId') Integer competitionId,
                                                                @PathVariable('registrationStatus') RegistrationStatus registrationStatus) {
-        competitionViewService.updateRegistrationStatus(competitionId, registrationStatus)
-        return new ResponseEntity<Void>(HttpStatus.OK)
+        return new ResponseEntity<CompetitionView>(competitionViewService.updateRegistrationStatus(competitionId, registrationStatus), HttpStatus.OK)
+    }
+
+    @SecurityEndpoint()
+    @GetMapping('/competition/{competitionId}/categories')
+    List<CompetitionCategoryView> getCategoriesByCompetition(@PathVariable('competitionId') Integer competitionId) {
+        return competitionViewService.getCategoriesByCompetitionId(competitionId)
     }
 }

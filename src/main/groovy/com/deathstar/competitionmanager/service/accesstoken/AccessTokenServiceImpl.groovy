@@ -12,7 +12,7 @@ import java.time.Instant
 @Service
 class AccessTokenServiceImpl implements AccessTokenService {
 
-    @Value('${expires-seconds:3600}')
+    @Value('${expires-seconds:21600}')
     int tokenLifeLength
 
     @Autowired
