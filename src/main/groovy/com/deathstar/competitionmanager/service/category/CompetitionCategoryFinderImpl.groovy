@@ -15,6 +15,7 @@ class CompetitionCategoryFinderImpl implements CompetitionCategoryFinder {
     CompetitionCategory findCompetitionCategoryForSportsman(RegistratedSportsman sportsman) {
         List<CompetitionCategory> allCategories = competitionCategoryService.readAll()
         List<CompetitionCategory> suitableCategories = allCategories
+                .findAll { category -> category.male == sportsman.male }
                 .findAll { category -> agePredicate(category, sportsman) }
                 .findAll { category -> weightPredicate(category, sportsman) }
                 .findAll { category -> experiencePredicate(category, sportsman) }
