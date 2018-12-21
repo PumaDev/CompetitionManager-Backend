@@ -26,21 +26,21 @@ class CompetitionCategoryFinderImpl implements CompetitionCategoryFinder {
     }
 
     static boolean agePredicate(CompetitionCategory category, CreateRegistratedSportsmanView sportsman) {
-        boolean sportsmanCanBeInCategory = false
+        boolean sportsmanCanBeInCategory = true
         sportsmanCanBeInCategory = category.lowerAge ? category.lowerAge <= sportsman.age : sportsmanCanBeInCategory
         sportsmanCanBeInCategory = category.upperAge ? category.upperAge >= sportsman.age : sportsmanCanBeInCategory
         return sportsmanCanBeInCategory
     }
 
     static boolean weightPredicate(CompetitionCategory category, CreateRegistratedSportsmanView sportsman) {
-        boolean sportsmanCanBeInCategory = false
+        boolean sportsmanCanBeInCategory = true
         sportsmanCanBeInCategory = category.lowerWeight ? category.lowerWeight <= sportsman.weight : sportsmanCanBeInCategory
         sportsmanCanBeInCategory = category.upperWeight ? category.upperWeight >= sportsman.weight : sportsmanCanBeInCategory
         return sportsmanCanBeInCategory
     }
 
     static boolean experiencePredicate(CompetitionCategory category, CreateRegistratedSportsmanView sportsman) {
-        boolean sportsmanCanBeInCategory = false
+        boolean sportsmanCanBeInCategory = true
         sportsmanCanBeInCategory = category.lowerExperience ? category.lowerExperience <= sportsman.experience : sportsmanCanBeInCategory
         sportsmanCanBeInCategory = category.upperExperience ? category.upperExperience >= sportsman.experience : sportsmanCanBeInCategory
         return sportsmanCanBeInCategory

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+import static com.deathstar.competitionmanager.domain.user.UserRole.ADMIN
 import static com.deathstar.competitionmanager.domain.user.UserRole.COACH
 
 @RestController
@@ -16,21 +17,21 @@ class CompetitionCategoryController {
     @Autowired
     CompetitionCategoryViewService competitionCategoryViewService
 
-    @SecurityEndpoint(rolesHasAccess = [COACH])
+    @SecurityEndpoint(rolesHasAccess = [ADMIN])
     @PostMapping('/competition-category')
     ResponseEntity<CompetitionCategoryView> create(@RequestBody CompetitionCategoryView competitionCategory) {
         CompetitionCategoryView createdCategory = competitionCategoryViewService.create(competitionCategory)
         return new ResponseEntity<CompetitionCategoryView>(createdCategory, HttpStatus.OK)
     }
 
-    @SecurityEndpoint(rolesHasAccess = [COACH])
+    @SecurityEndpoint(rolesHasAccess = [ADMIN])
     @PostMapping('/competition-category/bulk')
     ResponseEntity<List<CompetitionCategoryView>> createBulk(@RequestBody List<CompetitionCategoryView> competitionCategories) {
         List<CompetitionCategoryView> createdCategoryViews = competitionCategoryViewService.bulkCreate(competitionCategories)
         return new ResponseEntity<List<CompetitionCategoryView>>(createdCategoryViews, HttpStatus.OK)
     }
 
-    @SecurityEndpoint(rolesHasAccess = [COACH])
+    @SecurityEndpoint(rolesHasAccess = [ADMIN])
     @PutMapping('/competition-category')
     ResponseEntity<CompetitionCategoryView> update(@RequestBody CompetitionCategoryView competitionCategory) {
         CompetitionCategoryView updatedCategory = competitionCategoryViewService.update(competitionCategory)
