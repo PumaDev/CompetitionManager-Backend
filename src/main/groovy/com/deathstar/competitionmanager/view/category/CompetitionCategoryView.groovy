@@ -6,6 +6,7 @@ class CompetitionCategoryView {
 
     Integer id
     String displayName
+    String section
     Integer lowerAge
     Integer upperAge
     Integer lowerWeight

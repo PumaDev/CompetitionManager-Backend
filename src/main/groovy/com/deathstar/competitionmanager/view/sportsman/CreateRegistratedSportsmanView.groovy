@@ -11,4 +11,5 @@ class CreateRegistratedSportsmanView {
     Male male
     String coach
     Integer competitionId
+    String section
 }

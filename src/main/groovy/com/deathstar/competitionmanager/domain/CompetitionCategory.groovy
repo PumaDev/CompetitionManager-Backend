@@ -21,6 +21,9 @@ class CompetitionCategory {
     @Column(name = 'display_name', nullable = false)
     String displayName
 
+    @Column(name = 'section', nullable = false)
+    String section
+
     @Column(name = 'lower_age', nullable = true)
     Integer lowerAge
 

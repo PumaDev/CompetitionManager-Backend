@@ -16,4 +16,6 @@ interface CompetitionCategoryViewService {
     List<CompetitionCategoryView> bulkUpdate(List<CompetitionCategoryView> competitionCategories)
 
     CompetitionCategoryView findById(Integer id)
+
+    List<String> getSections()
 }

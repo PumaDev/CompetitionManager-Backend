@@ -15,4 +15,6 @@ interface CompetitionCategoryService {
     CompetitionCategory update(CompetitionCategory competitionCategory)
 
     List<CompetitionCategory> bulkUpdate(List<CompetitionCategory> competitionCategories)
+
+    List<String> getSections()
 }

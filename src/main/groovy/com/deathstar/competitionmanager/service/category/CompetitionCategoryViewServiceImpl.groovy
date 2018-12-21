@@ -52,4 +52,9 @@ class CompetitionCategoryViewServiceImpl implements CompetitionCategoryViewServi
         }
         return competitionCategoryConverter.convertToView(competitionCategory)
     }
+
+    @Override
+    List<String> getSections() {
+        return competitionCategoryService.getSections()
+    }
 }

@@ -41,4 +41,9 @@ class CompetitionCategoryServiceImpl implements CompetitionCategoryService {
     List<CompetitionCategory> bulkUpdate(List<CompetitionCategory> competitionCategories) {
         return competitionCategoryRepository.save(competitionCategories)
     }
+
+    @Override
+    List<String> getSections() {
+        return competitionCategoryRepository.findDistinctSections()
+    }
 }
