@@ -1,6 +1,7 @@
 package com.deathstar.competitionmanager.service.sportsman
 
 import com.deathstar.competitionmanager.domain.RegistratedSportsman
+import io.swagger.models.auth.In
 
 interface RegistratedSportsmanService {
 
@@ -13,6 +14,8 @@ interface RegistratedSportsmanService {
     List<RegistratedSportsman> findSportsmanByCompetitionId(Integer competitionId)
 
     List<RegistratedSportsman> findSportsmenByClubNameAndCompetitionId(String clubName, Integer competitionId)
+
+    List<RegistratedSportsman> findSportsmenByCompetitionIdAndCategoryId(Integer competitionId, Integer categoryId)
 
     RegistratedSportsman delete(Integer sportsmanId)
 }

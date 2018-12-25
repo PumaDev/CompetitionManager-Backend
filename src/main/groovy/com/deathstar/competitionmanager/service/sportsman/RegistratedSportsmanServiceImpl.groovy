@@ -37,6 +37,11 @@ class RegistratedSportsmanServiceImpl implements RegistratedSportsmanService {
     }
 
     @Override
+    List<RegistratedSportsman> findSportsmenByCompetitionIdAndCategoryId(Integer competitionId, Integer categoryId) {
+        return registratedSportsmanRepository.findSportsmenByCompetitionIdAndCategoryId(competitionId, categoryId)
+    }
+
+    @Override
     RegistratedSportsman delete(Integer sportsmanId) {
         return registratedSportsmanRepository.delete(sportsmanId)
     }
