@@ -3,6 +3,7 @@ package com.deathstar.competitionmanager.repository
 import com.deathstar.competitionmanager.domain.RegistratedSportsman
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 
 interface RegistratedSportsmanRepository extends JpaRepository<RegistratedSportsman, Integer> {
 
@@ -10,6 +11,6 @@ interface RegistratedSportsmanRepository extends JpaRepository<RegistratedSports
 
     List<RegistratedSportsman> findRegistratedSportsmansByClubNameAndCompetitionId(String clubName, Integer competitionId)
 
-    @Query('select s from RegistratedSportsman s WHERE s.competitionId = :1 and s.categoryId = :2')
-    List<RegistratedSportsman> findSportsmenByCompetitionIdAndCategoryId(Integer competitionId, Integer categoryId)
+    @Query( nativeQuery = true, value = 'select * from RegistratedSportsman s WHERE s.competitionId = :competitionId and s.competition_category_id = :categoryId')
+    List<RegistratedSportsman> findSportsmenByCompetitionIdAndCategoryId(@Param('competitionId') Integer competitionId, @Param('categoryId') Integer categoryId)
 }
