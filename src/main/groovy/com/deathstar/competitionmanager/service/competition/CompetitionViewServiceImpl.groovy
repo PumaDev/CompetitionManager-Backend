@@ -6,6 +6,7 @@ import com.deathstar.competitionmanager.domain.user.User
 import com.deathstar.competitionmanager.domain.user.UserRole
 import com.deathstar.competitionmanager.exception.EntityNotFoundException
 import com.deathstar.competitionmanager.security.CurrentUserResolver
+import com.deathstar.competitionmanager.service.grid.CompetitionCategoryGridService
 import com.deathstar.competitionmanager.service.sportsman.RegistratedSportsmanService
 import com.deathstar.competitionmanager.view.CompetitionMetaView
 import com.deathstar.competitionmanager.view.CompetitionView
@@ -114,5 +115,18 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
     @Override
     List<CompetitionCategoryView> getCategoriesByCompetitionId(Integer competitionId) {
         return findById(competitionId)?.categories
+    }
+
+    @Autowired
+    CompetitionCategoryGridService competitionCategoryGridService
+
+    @Override
+    void generateGrids(Integer competitionId) {
+        Competition competition = competitionService.findById(competitionId)
+        if (!competition) {
+            System.out.println("Competition not found")
+        }  else {
+            competitionCategoryGridService.generateCategoryGridsForCompetition(competition)
+        }
     }
 }

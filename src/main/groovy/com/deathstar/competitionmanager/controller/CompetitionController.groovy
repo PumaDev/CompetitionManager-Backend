@@ -70,4 +70,12 @@ class CompetitionController {
     List<CompetitionCategoryView> getCategoriesByCompetition(@PathVariable('competitionId') Integer competitionId) {
         return competitionViewService.getCategoriesByCompetitionId(competitionId)
     }
+
+    //@SecurityEndpoint(rolesHasAccess = [ADMIN, DEVELOPER])
+    @GetMapping('/competition/{competitionId}/grid/generate')
+    // Test Method
+    String generateGrids(@PathVariable('competitionId') Integer competitionId) {
+        competitionViewService.generateGrids(competitionId)
+        return "Success"
+    }
 }

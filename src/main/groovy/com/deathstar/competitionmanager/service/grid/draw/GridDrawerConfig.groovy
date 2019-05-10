@@ -7,6 +7,12 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class GridDrawerConfig {
 
+    int titlePenSize = 30
+    int titleTab = 10
+
+    int titleWidthTab = titleTab
+    int titleHeightTab = titlePenSize + titleTab
+
     int listWidth = 1600
     int listHeight = 900
 

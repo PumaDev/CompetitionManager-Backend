@@ -11,6 +11,6 @@ interface RegistratedSportsmanRepository extends JpaRepository<RegistratedSports
 
     List<RegistratedSportsman> findRegistratedSportsmansByClubNameAndCompetitionId(String clubName, Integer competitionId)
 
-    @Query( nativeQuery = true, value = 'select * from RegistratedSportsman s WHERE s.competitionId = :competitionId and s.competition_category_id = :categoryId')
+    @Query( nativeQuery = true, value = 'select * from registrated_sportsman s WHERE s.competition_id = :competitionId and s.competition_category_id = :categoryId')
     List<RegistratedSportsman> findSportsmenByCompetitionIdAndCategoryId(@Param('competitionId') Integer competitionId, @Param('categoryId') Integer categoryId)
 }

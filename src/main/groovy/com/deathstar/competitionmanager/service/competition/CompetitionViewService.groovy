@@ -23,4 +23,6 @@ interface CompetitionViewService {
     List<CompetitionView> getAllCompetitions()
 
     List<CompetitionCategoryView> getCategoriesByCompetitionId(Integer competitionId)
+
+    void generateGrids(Integer competitionId)
 }
