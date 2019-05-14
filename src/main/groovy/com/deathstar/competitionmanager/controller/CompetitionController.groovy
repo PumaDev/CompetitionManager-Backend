@@ -7,8 +7,12 @@ import com.deathstar.competitionmanager.service.competition.CompetitionViewServi
 import com.deathstar.competitionmanager.view.CompetitionView
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.FileSystemResource
+import org.springframework.core.io.InputStreamResource
 import org.springframework.data.domain.PageRequest
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -61,7 +65,7 @@ class CompetitionController {
     @SecurityEndpoint(rolesHasAccess = [ADMIN])
     @PutMapping('/competition/{competitionId}/registration/{registrationStatus}')
     ResponseEntity<CompetitionView> updateRegistrationStatusOnCompetition(@PathVariable('competitionId') Integer competitionId,
-                                                               @PathVariable('registrationStatus') RegistrationStatus registrationStatus) {
+                                                                          @PathVariable('registrationStatus') RegistrationStatus registrationStatus) {
         return new ResponseEntity<CompetitionView>(competitionViewService.updateRegistrationStatus(competitionId, registrationStatus), HttpStatus.OK)
     }
 
@@ -71,11 +75,18 @@ class CompetitionController {
         return competitionViewService.getCategoriesByCompetitionId(competitionId)
     }
 
-    //@SecurityEndpoint(rolesHasAccess = [ADMIN, DEVELOPER])
+    @SecurityEndpoint(rolesHasAccess = [ADMIN, DEVELOPER])
     @GetMapping('/competition/{competitionId}/grid/generate')
-    // Test Method
-    String generateGrids(@PathVariable('competitionId') Integer competitionId) {
-        competitionViewService.generateGrids(competitionId)
-        return "Success"
+    ResponseEntity<InputStreamResource> generateGrids(@PathVariable('competitionId') Integer competitionId) {
+        Tuple2<File, CompetitionView> competitionGrids = competitionViewService.generateGrids(competitionId)
+
+        HttpHeaders httpHeaders = new HttpHeaders()
+        httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM)
+        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, String.format('attachment; filename="%s.zip"', competitionGrids.first.name))
+        httpHeaders.set(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
+
+        InputStreamResource fileSystemResource = new InputStreamResource(new FileInputStream(competitionGrids.first))
+
+        return new ResponseEntity<InputStreamResource>(fileSystemResource, httpHeaders, HttpStatus.OK)
     }
 }

@@ -1,5 +1,6 @@
 package com.deathstar.competitionmanager.service.competition
 
+import com.deathstar.competitionmanager.domain.Competition
 import com.deathstar.competitionmanager.domain.RegistrationStatus
 import com.deathstar.competitionmanager.view.CompetitionView
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
@@ -24,5 +25,5 @@ interface CompetitionViewService {
 
     List<CompetitionCategoryView> getCategoriesByCompetitionId(Integer competitionId)
 
-    void generateGrids(Integer competitionId)
+    Tuple2<File, CompetitionView> generateGrids(Integer competitionId)
 }

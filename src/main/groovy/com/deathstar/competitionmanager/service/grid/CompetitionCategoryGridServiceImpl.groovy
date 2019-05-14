@@ -8,9 +8,15 @@ import com.deathstar.competitionmanager.service.grid.draw.GridDrawer
 import com.deathstar.competitionmanager.service.grid.draw.GridDrawerConfig
 import com.deathstar.competitionmanager.service.grid.model.CompetitionCategoryGridItem
 import com.deathstar.competitionmanager.service.sportsman.RegistratedSportsmanService
+import groovy.util.logging.Log
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
+@Log
 @Service
 class CompetitionCategoryGridServiceImpl implements CompetitionCategoryGridService {
 
@@ -29,7 +35,36 @@ class CompetitionCategoryGridServiceImpl implements CompetitionCategoryGridServi
             generateGridForCategory(competition.id, competitionCategory)
         }
 
-        return null
+        File zipFile = packFilesToZip(gridsFiles, competition)
+        gridsFiles.each { it.delete() }
+        return zipFile
+    }
+
+    File packFilesToZip(List<File> gridFiles, Competition competition) {
+        String zipFileName = String.format("%s/%d-%s", fileWriterConfig.tempDirectoryPath, competition.id, UUID.randomUUID().toString())
+        FileOutputStream zipFos = new FileOutputStream(zipFileName)
+        ZipOutputStream zipOutputStream = new ZipOutputStream(zipFos)
+
+        final int bufferSize = 1024
+        byte[] buffer = new byte[bufferSize]
+
+        gridFiles.forEach { gridFile ->
+            ZipEntry zipEntry = new ZipEntry(gridFile.name)
+            zipOutputStream.putNextEntry(zipEntry)
+
+            FileInputStream gridFileInputStream = new FileInputStream(gridFile)
+            int len
+            while ((len = gridFileInputStream.read(buffer)) > 0) {
+                zipOutputStream.write(buffer, 0, len)
+            }
+
+            gridFileInputStream.close()
+            zipOutputStream.closeEntry()
+        }
+
+        zipOutputStream.close()
+
+        return new File(zipFileName)
     }
 
     private File generateGridForCategory(Integer competitionId, CompetitionCategory competitionCategory) {
@@ -43,8 +78,7 @@ class CompetitionCategoryGridServiceImpl implements CompetitionCategoryGridServi
         String tempDirectoryPath = String.format("%s/%d-%s", fileWriterConfig.tempDirectoryPath, competitionId, UUID.randomUUID().toString())
         File directory = new File(tempDirectoryPath)
         directory.mkdir()
+        log.info(String.format("Created directory for grids files: %s. Full path: %s", tempDirectoryPath, directory.getAbsolutePath()))
         return tempDirectoryPath
     }
 }
-
-

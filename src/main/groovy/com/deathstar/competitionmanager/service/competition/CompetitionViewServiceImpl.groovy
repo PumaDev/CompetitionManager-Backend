@@ -32,6 +32,9 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
     RegistratedSportsmanService registratedSportsmanService
 
     @Autowired
+    CompetitionCategoryGridService competitionCategoryGridService
+
+    @Autowired
     CurrentUserResolver currentUserResolver
 
     @Override
@@ -117,16 +120,15 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
         return findById(competitionId)?.categories
     }
 
-    @Autowired
-    CompetitionCategoryGridService competitionCategoryGridService
-
     @Override
-    void generateGrids(Integer competitionId) {
+    Tuple2<File, CompetitionView> generateGrids(Integer competitionId) {
         Competition competition = competitionService.findById(competitionId)
         if (!competition) {
             System.out.println("Competition not found")
+            throw new RuntimeException()
         }  else {
-            competitionCategoryGridService.generateCategoryGridsForCompetition(competition)
+            File zipFile = competitionCategoryGridService.generateCategoryGridsForCompetition(competition)
+            return new Tuple2<File, CompetitionView>(zipFile, competitionConverter.convertToView(competition))
         }
     }
 }
