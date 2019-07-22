@@ -5,7 +5,6 @@ import com.deathstar.competitionmanager.domain.CompetitionCategory
 import com.deathstar.competitionmanager.domain.RegistratedSportsman
 import com.deathstar.competitionmanager.service.grid.draw.FileWriterConfig
 import com.deathstar.competitionmanager.service.grid.draw.GridDrawer
-import com.deathstar.competitionmanager.service.grid.draw.GridDrawerConfig
 import com.deathstar.competitionmanager.service.grid.model.CompetitionCategoryGridItem
 import com.deathstar.competitionmanager.service.sportsman.RegistratedSportsmanService
 import groovy.util.logging.Log
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
 @Log
@@ -41,7 +39,7 @@ class CompetitionCategoryGridServiceImpl implements CompetitionCategoryGridServi
     }
 
     File packFilesToZip(List<File> gridFiles, Competition competition) {
-        String zipFileName = String.format("%s/%d-%s", fileWriterConfig.tempDirectoryPath, competition.id, UUID.randomUUID().toString())
+        String zipFileName = String.format("%s/%d-%s.zip", fileWriterConfig.tempDirectoryPath, competition.id, UUID.randomUUID().toString())
         FileOutputStream zipFos = new FileOutputStream(zipFileName)
         ZipOutputStream zipOutputStream = new ZipOutputStream(zipFos)
 

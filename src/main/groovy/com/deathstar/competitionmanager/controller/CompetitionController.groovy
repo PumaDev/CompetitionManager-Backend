@@ -4,10 +4,11 @@ import com.deathstar.competitionmanager.domain.RegistrationStatus
 import com.deathstar.competitionmanager.exception.EntityNotFoundException
 import com.deathstar.competitionmanager.security.SecurityEndpoint
 import com.deathstar.competitionmanager.service.competition.CompetitionViewService
+import com.deathstar.competitionmanager.service.grid.draw.FileWriterConfig
 import com.deathstar.competitionmanager.view.CompetitionView
+import com.deathstar.competitionmanager.view.GeneratedGridView
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.InputStreamResource
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpHeaders
@@ -76,17 +77,16 @@ class CompetitionController {
     }
 
     @SecurityEndpoint(rolesHasAccess = [ADMIN, DEVELOPER])
-    @GetMapping('/competition/{competitionId}/grid/generate')
-    ResponseEntity<InputStreamResource> generateGrids(@PathVariable('competitionId') Integer competitionId) {
+    @PostMapping('/competition/{competitionId}/grid/generate')
+    ResponseEntity<GeneratedGridView> generateGrids(@PathVariable('competitionId') Integer competitionId) {
         Tuple2<File, CompetitionView> competitionGrids = competitionViewService.generateGrids(competitionId)
 
         HttpHeaders httpHeaders = new HttpHeaders()
-        httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM)
+        httpHeaders.setContentType(MediaType.APPLICATION_PDF)
         httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, String.format('attachment; filename="%s.zip"', competitionGrids.first.name))
         httpHeaders.set(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
 
-        InputStreamResource fileSystemResource = new InputStreamResource(new FileInputStream(competitionGrids.first))
-
-        return new ResponseEntity<InputStreamResource>(fileSystemResource, httpHeaders, HttpStatus.OK)
+        return new ResponseEntity<GeneratedGridView>(new GeneratedGridView(archiveName: competitionGrids.first.name), HttpStatus.CREATED)
     }
 }
+

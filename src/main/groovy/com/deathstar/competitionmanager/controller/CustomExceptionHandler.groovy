@@ -1,6 +1,7 @@
 package com.deathstar.competitionmanager.controller
 
 import com.deathstar.competitionmanager.exception.CompetitionManagerException
+import com.deathstar.competitionmanager.view.EntityCreateErrorDetails
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -20,7 +21,3 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 }
 
-class EntityCreateErrorDetails {
-    int errorCode
-    String message
-}

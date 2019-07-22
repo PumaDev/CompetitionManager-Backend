@@ -33,10 +33,3 @@ class CompetitionView {
     CompetitionMetaView competitionMeta
 }
 
-class CompetitionMetaView {
-    int totalCategoriesSize
-    Integer minAgeCategory
-    Integer maxAgeCategory
-    int totalSportsmenCount
-    Integer totalSportsmenOfCoachClubCount
-}
