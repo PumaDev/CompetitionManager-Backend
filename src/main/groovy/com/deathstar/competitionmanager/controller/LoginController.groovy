@@ -35,4 +35,9 @@ class LoginController {
     RegistrateResponse register(@RequestBody CreateUserView createUserView) {
         return userViewService.register(createUserView)
     }
+
+    @PostMapping('/token/refresh')
+    AccessTokenView refreshToken() {
+        return loginService.refreshToken()
+    }
 }
