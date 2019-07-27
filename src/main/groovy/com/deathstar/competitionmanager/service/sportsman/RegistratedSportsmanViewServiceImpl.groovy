@@ -3,6 +3,8 @@ package com.deathstar.competitionmanager.service.sportsman
 import com.deathstar.competitionmanager.domain.Competition
 import com.deathstar.competitionmanager.domain.CompetitionCategory
 import com.deathstar.competitionmanager.domain.RegistratedSportsman
+import com.deathstar.competitionmanager.domain.user.User
+import com.deathstar.competitionmanager.domain.user.UserRole
 import com.deathstar.competitionmanager.exception.AccessDeniedException
 import com.deathstar.competitionmanager.exception.RegistrationClosedException
 import com.deathstar.competitionmanager.security.CurrentUserResolver
@@ -64,7 +66,8 @@ class RegistratedSportsmanViewServiceImpl implements RegistratedSportsmanViewSer
     @Override
     void deleteRegistratedSportsman(Integer sportsmanId) {
         RegistratedSportsman sportsman = registratedSportsmanService.getById(sportsmanId)
-        if (!sportsman || sportsman.clubName != currentUserResolver.getCurrentUser().clubName) {
+        User currentUser = currentUserResolver.currentUser
+        if (!sportsman || (sportsman.clubName != currentUser.clubName && currentUser.userRole != UserRole.ADMIN)) {
             throw new AccessDeniedException('You try remove sportsman not from your club')
         }
         registratedSportsmanService.delete(sportsmanId)

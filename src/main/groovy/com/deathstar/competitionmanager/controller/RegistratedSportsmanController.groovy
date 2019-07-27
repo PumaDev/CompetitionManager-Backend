@@ -42,7 +42,7 @@ class RegistratedSportsmanController {
         }
     }
 
-    @SecurityEndpoint(rolesHasAccess = [COACH])
+    @SecurityEndpoint(rolesHasAccess = [COACH, ADMIN])
     @DeleteMapping('/sportsman/delete/{sportsmanId}')
     ResponseEntity<Void> deleteFromRegistration(@PathVariable('sportsmanId') Integer sportsmanId) {
         registratedSportsmanViewService.deleteRegistratedSportsman(sportsmanId)
