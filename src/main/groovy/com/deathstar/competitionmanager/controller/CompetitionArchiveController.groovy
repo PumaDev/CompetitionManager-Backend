@@ -26,7 +26,7 @@ class CompetitionArchiveController {
         httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, String.format('attachment; filename="%s"', archiveInfo.second))
         httpHeaders.set(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
 
-        InputStreamResource fileSystemResource = new InputStreamResource(new FileInputStream(archiveInfo.first))
+        InputStreamResource fileSystemResource = new InputStreamResource(archiveInfo.first)
 
         return new ResponseEntity<InputStreamResource>(fileSystemResource, httpHeaders, HttpStatus.OK)
     }

@@ -2,5 +2,5 @@ package com.deathstar.competitionmanager.service.competition
 
 interface CompetitionArchiveService {
 
-    Tuple2<File, String> getCompetitionArchive(String archiveName)
+    Tuple2<InputStream, String> getCompetitionArchive(String archiveName)
 }

@@ -1,16 +1,19 @@
 package com.deathstar.competitionmanager.service.competition
 
 import com.deathstar.competitionmanager.domain.Competition
+import com.deathstar.competitionmanager.domain.GeneratedGrid
 import com.deathstar.competitionmanager.domain.RegistrationStatus
 import com.deathstar.competitionmanager.domain.user.User
 import com.deathstar.competitionmanager.domain.user.UserRole
 import com.deathstar.competitionmanager.exception.EntityNotFoundException
 import com.deathstar.competitionmanager.security.CurrentUserResolver
 import com.deathstar.competitionmanager.service.grid.CompetitionCategoryGridService
+import com.deathstar.competitionmanager.service.grid.GeneratedGridService
 import com.deathstar.competitionmanager.service.sportsman.RegistratedSportsmanService
 import com.deathstar.competitionmanager.view.CompetitionMetaView
 import com.deathstar.competitionmanager.view.CompetitionView
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
+import org.hibernate.engine.jdbc.BlobProxy
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -36,6 +39,9 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
 
     @Autowired
     CurrentUserResolver currentUserResolver
+
+    @Autowired
+    GeneratedGridService generatedGridService
 
     @Override
     CompetitionView save(CompetitionView competitionView) {
@@ -126,8 +132,12 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
         if (!competition) {
             System.out.println("Competition not found")
             throw new RuntimeException()
-        }  else {
+        } else {
             File zipFile = competitionCategoryGridService.generateCategoryGridsForCompetition(competition)
+            GeneratedGrid generatedGrid = new GeneratedGrid(key: zipFile.getName(),
+                    body: BlobProxy.generateProxy(new FileInputStream(zipFile), zipFile.size()))
+            generatedGridService.save(generatedGrid)
+            zipFile.delete()
             return new Tuple2<File, CompetitionView>(zipFile, competitionConverter.convertToView(competition))
         }
     }

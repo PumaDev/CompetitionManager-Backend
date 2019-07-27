@@ -75,3 +75,11 @@ CREATE TABLE `registrated_sportsman` (
   KEY `competition_category_id_fk` (`competition_category_id`),
   CONSTRAINT `registrated_sportsman_ibfk_1` FOREIGN KEY (`competition_category_id`) REFERENCES `competition_category` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `generated_grid` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `grid_key` varchar(50) NOT NULL UNIQUE,
+    `body` BLOB,
+    `created_date` TIMESTAMP,
+    primary key (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
