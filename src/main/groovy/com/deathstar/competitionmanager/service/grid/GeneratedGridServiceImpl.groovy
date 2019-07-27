@@ -30,7 +30,7 @@ class GeneratedGridServiceImpl implements GeneratedGridService {
     }
 
     @Override
-    boolean deleteGeneratedGridsByIds(Set<GeneratedGrid> gridsForDelete) {
-        return generatedGridRepository.delete(gridsForDelete)
+    boolean deleteGeneratedGrids(Set<GeneratedGrid> gridsForDelete) {
+        return generatedGridRepository.delete(gridsForDelete as Iterable<GeneratedGrid>)
     }
 }

@@ -12,5 +12,5 @@ interface GeneratedGridService {
 
     Set<GeneratedGrid> findByLessThenCreatedDate(Instant createdDate)
 
-    boolean deleteGeneratedGridsByIds(Set<GeneratedGrid> gridsForDelete)
+    boolean deleteGeneratedGrids(Set<GeneratedGrid> gridsForDelete)
 }

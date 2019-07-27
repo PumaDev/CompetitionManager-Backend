@@ -15,6 +15,7 @@ class GeneratedGrid {
     Integer id
     @Column(name = 'grid_key', nullable = false)
     String key
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = 'body', nullable = false)
     Blob body
     @Column(name = 'created_date', nullable = false)
