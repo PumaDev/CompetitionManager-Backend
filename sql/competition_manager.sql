@@ -28,7 +28,7 @@ CREATE TABLE `competition` (
   `name` varchar(255) NOT NULL,
   `start_date` timestamp NULL DEFAULT NULL,
   `end_date` timestamp NULL DEFAULT NULL,
-  `description` tinytext,
+  `description` LONGTEXT,
   `registration_status` varchar(20) NOT NULL DEFAULT 'OPEN',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
