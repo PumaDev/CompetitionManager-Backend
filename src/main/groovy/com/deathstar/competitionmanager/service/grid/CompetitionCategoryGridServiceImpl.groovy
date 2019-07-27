@@ -31,7 +31,7 @@ class CompetitionCategoryGridServiceImpl implements CompetitionCategoryGridServi
     File generateCategoryGridsForCompetition(Competition competition) {
         List<File> gridsFiles = competition.categories.collect { CompetitionCategory competitionCategory ->
             generateGridForCategory(competition.id, competitionCategory)
-        }
+        }.findAll { it != null }
 
         File zipFile = packFilesToZip(gridsFiles, competition)
         gridsFiles.each { it.delete() }
@@ -67,6 +67,9 @@ class CompetitionCategoryGridServiceImpl implements CompetitionCategoryGridServi
 
     private File generateGridForCategory(Integer competitionId, CompetitionCategory competitionCategory) {
         List<RegistratedSportsman> sportsmen = registratedSportsmanService.findSportsmenByCompetitionIdAndCategoryId(competitionId, competitionCategory.id)
+        if (sportsmen.isEmpty()) {
+            return null
+        }
         CompetitionCategoryGridPairProcessor processor = new CompetitionCategoryGridPairProcessor(sportsmen: sportsmen)
         CompetitionCategoryGridItem root = processor.divide()
         return gridDrawer.drawGridToFile(competitionCategory, root, buildTempDirectoryPath(competitionId))

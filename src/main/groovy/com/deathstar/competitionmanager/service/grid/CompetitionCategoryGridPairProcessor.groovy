@@ -24,7 +24,7 @@ class CompetitionCategoryGridPairProcessor {
     }
 
     CompetitionCategoryGridItem divide() {
-        if (sportsmen.size() == 1) {
+        if (sportsmen.size() <= 1) {
             return new CompetitionCategoryGridSportsman(sportsman: sportsmen[0])
         }
 
