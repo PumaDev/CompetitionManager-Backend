@@ -84,10 +84,15 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
         competitionView.competitionMeta = new CompetitionMetaView(
                 totalCategoriesSize: competitionView.categories.size(),
                 minAgeCategory: competitionView.categories.collect { it.lowerAge }.min { it },
-                maxAgeCategory: competitionView.categories.collect { it.upperAge }.max { it },
+                maxAgeCategory: getMaxAgeOfCompetition(competitionView),
                 totalSportsmenCount: registratedSportsmanService.findSportsmanByCompetitionId(competitionView.id).size(),
                 totalSportsmenOfCoachClubCount: currentUser.userRole == UserRole.COACH ?
                         registratedSportsmanService.findSportsmenByClubNameAndCompetitionId(currentUser.clubName, competitionView.id).size() : null)
+    }
+
+    private static Integer getMaxAgeOfCompetition(CompetitionView competition) {
+        Set<Integer> upperAges = competition.categories.collect { it.upperAge }
+        upperAges.contains(null) ? null : upperAges.max()
     }
 
     @Override
