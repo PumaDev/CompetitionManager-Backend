@@ -60,6 +60,12 @@ class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
+    boolean deleteCompetitionById(Integer id) {
+        competitionRepository.delete(id)
+        return true
+    }
+
+    @Override
     List<Competition> getAllCompetitions() {
         return competitionRepository.findAll()
     }

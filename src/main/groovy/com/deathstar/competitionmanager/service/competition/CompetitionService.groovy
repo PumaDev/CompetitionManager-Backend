@@ -16,5 +16,7 @@ interface CompetitionService {
 
     Competition update(Competition competition)
 
+    boolean deleteCompetitionById(Integer id)
+
     List<Competition> getAllCompetitions()
 }

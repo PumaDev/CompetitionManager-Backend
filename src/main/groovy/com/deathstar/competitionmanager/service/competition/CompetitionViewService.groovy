@@ -1,6 +1,5 @@
 package com.deathstar.competitionmanager.service.competition
 
-import com.deathstar.competitionmanager.domain.Competition
 import com.deathstar.competitionmanager.domain.RegistrationStatus
 import com.deathstar.competitionmanager.view.CompetitionView
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
@@ -18,6 +17,8 @@ interface CompetitionViewService {
     Page<CompetitionView> findLastCompetitions(Pageable pageable)
 
     CompetitionView update(CompetitionView competition)
+
+    boolean deleteCompetition(Integer competitionId)
 
     CompetitionView updateRegistrationStatus(Integer competitionId, RegistrationStatus newRegistrationStatus)
 

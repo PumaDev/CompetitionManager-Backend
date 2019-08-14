@@ -103,6 +103,11 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
     }
 
     @Override
+    boolean deleteCompetition(Integer competitionId) {
+        return competitionService.deleteCompetitionById(competitionId)
+    }
+
+    @Override
     CompetitionView updateRegistrationStatus(Integer competitionId, RegistrationStatus newRegistrationStatus) {
         // support only closing and reopening
         if (![REOPEN, CLOSED].contains(newRegistrationStatus)) {

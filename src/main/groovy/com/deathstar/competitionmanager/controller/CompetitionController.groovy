@@ -4,12 +4,10 @@ import com.deathstar.competitionmanager.domain.RegistrationStatus
 import com.deathstar.competitionmanager.exception.EntityNotFoundException
 import com.deathstar.competitionmanager.security.SecurityEndpoint
 import com.deathstar.competitionmanager.service.competition.CompetitionViewService
-import com.deathstar.competitionmanager.service.grid.draw.FileWriterConfig
 import com.deathstar.competitionmanager.view.CompetitionView
 import com.deathstar.competitionmanager.view.GeneratedGridView
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -41,6 +39,12 @@ class CompetitionController {
             throw new EntityNotFoundException()
         }
         return competition
+    }
+
+    @SecurityEndpoint(rolesHasAccess = [ADMIN])
+    @DeleteMapping('/competition/{id}')
+    boolean deleteCompetition(@PathVariable('id') Integer competitionId) {
+        return competitionViewService.deleteCompetition(competitionId)
     }
 
     @SecurityEndpoint(rolesHasAccess = [DEVELOPER])
