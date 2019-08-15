@@ -9,6 +9,7 @@ import com.deathstar.competitionmanager.exception.EntityNotFoundException
 import com.deathstar.competitionmanager.security.CurrentUserResolver
 import com.deathstar.competitionmanager.service.grid.CompetitionCategoryGridService
 import com.deathstar.competitionmanager.service.grid.GeneratedGridService
+import com.deathstar.competitionmanager.service.mail.MailService
 import com.deathstar.competitionmanager.service.sportsman.RegistratedSportsmanService
 import com.deathstar.competitionmanager.view.CompetitionMetaView
 import com.deathstar.competitionmanager.view.CompetitionView
@@ -43,10 +44,14 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
     @Autowired
     GeneratedGridService generatedGridService
 
+    @Autowired
+    MailService mailService
+
     @Override
     CompetitionView save(CompetitionView competitionView) {
         Competition competition = competitionConverter.convertToDomainEntity(competitionView)
         Competition createdCompetition = competitionService.save(competition)
+        mailService.notifyAllCoachesAboutNewCompetition(createdCompetition)
         return competitionConverter.convertToView(createdCompetition)
     }
 

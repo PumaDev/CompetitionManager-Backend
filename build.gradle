@@ -58,7 +58,8 @@ dependencies {
     compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0.1'
     compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.2'
     compile group: 'javax.activation', name: 'activation', version: '1.1.1'
-
+    
+    compile group: 'javax.mail', name: 'mail', version: '1.4.7'
 
     testCompile 'junit:junit-dep:4.10'
     testCompile 'cglib:cglib-nodep:2.2'

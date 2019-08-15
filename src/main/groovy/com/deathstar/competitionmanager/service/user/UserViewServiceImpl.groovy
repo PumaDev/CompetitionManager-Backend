@@ -3,6 +3,7 @@ package com.deathstar.competitionmanager.service.user
 import com.deathstar.competitionmanager.domain.user.ActivateStatus
 import com.deathstar.competitionmanager.domain.user.User
 import com.deathstar.competitionmanager.exception.ConflictEntityException
+import com.deathstar.competitionmanager.service.mail.MailService
 import com.deathstar.competitionmanager.view.user.CreateUserView
 import com.deathstar.competitionmanager.view.user.RegistrateResponse
 import com.deathstar.competitionmanager.view.user.UserView
@@ -20,6 +21,9 @@ class UserViewServiceImpl implements UserViewService {
 
     @Autowired
     PasswordEncrypter passwordEncrypter
+
+    @Autowired
+    MailService mailService
 
     @Override
     RegistrateResponse register(CreateUserView createUserView) {
@@ -56,7 +60,10 @@ class UserViewServiceImpl implements UserViewService {
     UserView setActivateStatusByUserId(ActivateStatus newActivateStatus, Integer userId) {
         User user = userService.getNotNullUser(userId)
         user.setActivateStatus(newActivateStatus)
-        User updatesUser = userService.update(user)
-        return userConverter.convertToView(updatesUser)
+        User updatedUser = userService.update(user)
+        if (newActivateStatus == ActivateStatus.ACTIVE) {
+            mailService.sentMailAboutAproveRegistration(updatedUser)
+        }
+        return userConverter.convertToView(updatedUser)
     }
 }
