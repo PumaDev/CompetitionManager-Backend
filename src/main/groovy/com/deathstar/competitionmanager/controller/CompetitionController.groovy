@@ -8,6 +8,7 @@ import com.deathstar.competitionmanager.view.CompetitionView
 import com.deathstar.competitionmanager.view.GeneratedGridView
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -55,16 +56,16 @@ class CompetitionController {
 
     @SecurityEndpoint()
     @GetMapping('/competitions/future')
-    List<CompetitionView> getFutureCompetitions(@RequestParam('page') int page,
+    Page<CompetitionView> getFutureCompetitions(@RequestParam('page') int page,
                                                 @RequestParam(value = 'size') int size) {
-        return competitionViewService.findFeatureCompetitions(new PageRequest(page, size)).content
+        return competitionViewService.findFeatureCompetitions(new PageRequest(page, size))
     }
 
     @SecurityEndpoint()
     @GetMapping('/competitions/last')
-    List<CompetitionView> getLastCompetitions(@RequestParam('page') int page,
+    Page<CompetitionView> getLastCompetitions(@RequestParam('page') int page,
                                               @RequestParam(value = 'size') int size) {
-        return competitionViewService.findLastCompetitions(new PageRequest(page, size)).content
+        return competitionViewService.findLastCompetitions(new PageRequest(page, size))
     }
 
     @SecurityEndpoint(rolesHasAccess = [ADMIN])

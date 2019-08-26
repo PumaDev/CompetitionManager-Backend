@@ -13,7 +13,7 @@ abstract class ViewConverter<D, V> {
 
     Page<V> convertToViews(Page<D> entitiesPage, Pageable pageable) {
         def views = convertToViews(entitiesPage.content)
-        return new PageImpl<>(views, pageable, entitiesPage.totalPages)
+        return new PageImpl<>(views, pageable, entitiesPage.totalElements)
     }
 
     abstract V convertToView(D domainEntity)
