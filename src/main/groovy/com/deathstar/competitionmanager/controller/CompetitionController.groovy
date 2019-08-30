@@ -29,7 +29,7 @@ class CompetitionController {
     @PostMapping('/competition')
     ResponseEntity<CompetitionView> createCompetition(@RequestBody CompetitionView competitionView) {
         CompetitionView createdCompetition = competitionViewService.save(competitionView)
-        return new ResponseEntity<CompetitionView>(createdCompetition, HttpStatus.CREATED)
+            return new ResponseEntity<CompetitionView>(createdCompetition, HttpStatus.CREATED)
     }
 
     @SecurityEndpoint()
