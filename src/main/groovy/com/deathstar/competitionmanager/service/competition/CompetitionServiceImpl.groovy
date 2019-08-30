@@ -37,13 +37,13 @@ class CompetitionServiceImpl implements CompetitionService {
     @Override
     Page<Competition> findFeatureCompetitions(Pageable pageable) {
         LocalDate now = LocalDate.now()
-        return competitionRepository.findCompetitionsByStartDateAfter(now.minusDays(1), pageable)
+        return competitionRepository.findCompetitionsByStartDateAfterOrderByStartDate(now.minusDays(1), pageable)
     }
 
     @Override
     Page<Competition> findLastCompetitions(Pageable pageable) {
         LocalDate now = LocalDate.now()
-        return competitionRepository.findCompetitionsByStartDateBefore(now.plusDays(1), pageable)
+        return competitionRepository.findCompetitionsByStartDateBeforeOrderByStartDateDesc(now.plusDays(1), pageable)
     }
 
     @Override

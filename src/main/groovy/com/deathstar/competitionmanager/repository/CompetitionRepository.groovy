@@ -9,7 +9,7 @@ import java.time.LocalDate
 
 interface CompetitionRepository extends JpaRepository<Competition, Integer> {
 
-    Page<Competition> findCompetitionsByStartDateAfter(LocalDate localDate, Pageable pageable)
+    Page<Competition> findCompetitionsByStartDateAfterOrderByStartDate(LocalDate localDate, Pageable pageable)
 
-    Page<Competition> findCompetitionsByStartDateBefore(LocalDate localDate, Pageable pageable)
+    Page<Competition> findCompetitionsByStartDateBeforeOrderByStartDateDesc(LocalDate localDate, Pageable pageable)
 }
