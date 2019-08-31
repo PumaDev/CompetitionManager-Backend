@@ -29,7 +29,16 @@ class CompetitionController {
     @PostMapping('/competition')
     ResponseEntity<CompetitionView> createCompetition(@RequestBody CompetitionView competitionView) {
         CompetitionView createdCompetition = competitionViewService.save(competitionView)
-            return new ResponseEntity<CompetitionView>(createdCompetition, HttpStatus.CREATED)
+        return new ResponseEntity<CompetitionView>(createdCompetition, HttpStatus.CREATED)
+    }
+
+    @SecurityEndpoint(rolesHasAccess = [ADMIN, DEVELOPER])
+    @PutMapping('/competition/{id}')
+    ResponseEntity<CompetitionView> updateCompetition(@RequestBody CompetitionView competitionView,
+                                                      @PathVariable('id') Integer id) {
+        competitionView.id = id
+        CompetitionView updatesCompetition = competitionViewService.update(competitionView)
+        return new ResponseEntity<CompetitionView>(updatesCompetition, HttpStatus.OK)
     }
 
     @SecurityEndpoint()

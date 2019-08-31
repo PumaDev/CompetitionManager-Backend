@@ -104,7 +104,9 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
     CompetitionView update(CompetitionView competitionView) {
         Competition competition = competitionConverter.convertToDomainEntity(competitionView)
         Competition updatedCompetition = competitionService.update(competition)
-        return competitionConverter.convertToView(updatedCompetition)
+        CompetitionView updatedCompetitionView = competitionConverter.convertToView(updatedCompetition)
+        fillCompetitionMetaInCompetition(currentUserResolver.getCurrentUser(), updatedCompetitionView)
+        return updatedCompetitionView
     }
 
     @Override
