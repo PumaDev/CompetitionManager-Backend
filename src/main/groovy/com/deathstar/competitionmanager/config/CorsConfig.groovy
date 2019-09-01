@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 class CorsConfig {
 
-    @Value('${cm.cors.ui-host:http://localhost:4200}')
+    @Value('${cm.cors.ui-host:*}')
     String uiHost
 
     @Bean
