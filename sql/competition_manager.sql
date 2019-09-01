@@ -1,4 +1,4 @@
-CREATE DATABASE `competition_manager` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE `competition_manager` DEFAULT CHARACTER SET utf8mb4;
 
 use `competition_manager`;
 
