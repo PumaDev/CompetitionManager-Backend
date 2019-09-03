@@ -5,6 +5,9 @@ build/
 # Ignore Gradle GUI config
 gradle-app.setting
 
+# Cusom files
+src/main/resources/application-local.properties
+
 ### Java template
 *.class
 
