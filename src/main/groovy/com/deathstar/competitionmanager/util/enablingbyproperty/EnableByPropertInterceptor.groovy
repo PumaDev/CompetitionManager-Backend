@@ -23,7 +23,7 @@ class EnableByPropertInterceptor {
     @Around('anyMethod() && @annotation(enableByProperty)')
     Object invoke(final ProceedingJoinPoint pjp, EnableByProperty enableByProperty) {
         String propertyEnable = env.getProperty(enableByProperty.value())
-        if (propertyEnable != null && propertyEnable.toLowerCase() == "enable") {
+        if (propertyEnable != null && propertyEnable.toLowerCase() == "true") {
             log.info("Process method calling: ${pjp.getSignature()}")
             return pjp.proceed()
         } else {
