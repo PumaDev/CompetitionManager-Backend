@@ -14,4 +14,6 @@ class CompetitionCategoryView {
     Integer lowerExperience
     Integer upperExperience
     Male male
+    CompetitionCategorySportsmanMeta sportsmanMeta
 }
+

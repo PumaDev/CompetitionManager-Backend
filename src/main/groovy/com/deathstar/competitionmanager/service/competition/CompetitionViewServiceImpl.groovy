@@ -2,6 +2,7 @@ package com.deathstar.competitionmanager.service.competition
 
 import com.deathstar.competitionmanager.domain.Competition
 import com.deathstar.competitionmanager.domain.GeneratedGrid
+import com.deathstar.competitionmanager.domain.RegistratedSportsman
 import com.deathstar.competitionmanager.domain.RegistrationStatus
 import com.deathstar.competitionmanager.domain.user.User
 import com.deathstar.competitionmanager.domain.user.UserRole
@@ -13,6 +14,7 @@ import com.deathstar.competitionmanager.service.mail.MailService
 import com.deathstar.competitionmanager.service.sportsman.RegistratedSportsmanService
 import com.deathstar.competitionmanager.view.CompetitionMetaView
 import com.deathstar.competitionmanager.view.CompetitionView
+import com.deathstar.competitionmanager.view.category.CompetitionCategorySportsmanMeta
 import com.deathstar.competitionmanager.view.category.CompetitionCategoryView
 import org.hibernate.engine.jdbc.BlobProxy
 import org.springframework.beans.factory.annotation.Autowired
@@ -59,7 +61,7 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
     CompetitionView findById(Integer id) {
         Competition foundCompetition = competitionService.findById(id)
         CompetitionView competitionView = competitionConverter.convertToView(foundCompetition)
-        fillCompetitionMetaInCompetition(currentUserResolver.getCurrentUser(), competitionView)
+        fillCompetitionMetaInCompetition(currentUserResolver.getCurrentUser(), competitionView, true)
         return competitionView
     }
 
@@ -85,7 +87,7 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
         }
     }
 
-    private void fillCompetitionMetaInCompetition(User currentUser, CompetitionView competitionView) {
+    private void fillCompetitionMetaInCompetition(User currentUser, CompetitionView competitionView, boolean fillCategorisMeta = false) {
         competitionView.competitionMeta = new CompetitionMetaView(
                 totalCategoriesSize: competitionView.categories.size(),
                 minAgeCategory: competitionView.categories.collect { it.lowerAge }.min { it },
@@ -93,6 +95,20 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
                 totalSportsmenCount: registratedSportsmanService.findSportsmanByCompetitionId(competitionView.id).size(),
                 totalSportsmenOfCoachClubCount: currentUser.userRole == UserRole.COACH ?
                         registratedSportsmanService.findSportsmenByClubNameAndCompetitionId(currentUser.clubName, competitionView.id).size() : null)
+
+        if (fillCategorisMeta) {
+            List<RegistratedSportsman> allSporstmensOnCurrentCompetition = registratedSportsmanService.findSportsmanByCompetitionId(competitionView.id)
+            Map<Integer, List<RegistratedSportsman>> sporstmanByCategoryId = allSporstmensOnCurrentCompetition.groupBy { it.competitionCategory.id }
+
+            competitionView.categories.forEach { category ->
+                List<RegistratedSportsman> sporstamInCategory = sporstmanByCategoryId.getOrDefault(category.id, [])
+
+                category.sportsmanMeta = new CompetitionCategorySportsmanMeta(
+                        totalSportsmanCount: sporstamInCategory.size(),
+                        sportsmanFromCoachClubCount: sporstamInCategory.findAll { it.clubName == currentUser.clubName }.size()
+                )
+            }
+        }
     }
 
     private static Integer getMaxAgeOfCompetition(CompetitionView competition) {
@@ -105,7 +121,7 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
         Competition competition = competitionConverter.convertToDomainEntity(competitionView)
         Competition updatedCompetition = competitionService.update(competition)
         CompetitionView updatedCompetitionView = competitionConverter.convertToView(updatedCompetition)
-        fillCompetitionMetaInCompetition(currentUserResolver.getCurrentUser(), updatedCompetitionView)
+        fillCompetitionMetaInCompetition(currentUserResolver.getCurrentUser(), updatedCompetitionView, true)
         return updatedCompetitionView
     }
 
