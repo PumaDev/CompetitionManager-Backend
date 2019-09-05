@@ -102,5 +102,13 @@ class CompetitionController {
 
         return new ResponseEntity<GeneratedGridView>(new GeneratedGridView(archiveName: competitionGrids.first.name), HttpStatus.CREATED)
     }
+
+    @SecurityEndpoint(rolesHasAccess = [ADMIN, DEVELOPER])
+    @PutMapping('/competitions/{competitionId}/attach-categories')
+    ResponseEntity<CompetitionView> attachCategoriesToCompetition(@PathVariable('competitionId') Integer competitionId,
+                                                                  @RequestBody List<Integer> categoriesIds) {
+        CompetitionView updatedCompetition = competitionViewService.attachCategoriesToCompetition(competitionId, categoriesIds)
+        return new ResponseEntity<CompetitionView>(updatedCompetition, HttpStatus.OK)
+    }
 }
 

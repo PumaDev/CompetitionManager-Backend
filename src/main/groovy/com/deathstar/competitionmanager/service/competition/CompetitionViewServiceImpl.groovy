@@ -1,6 +1,7 @@
 package com.deathstar.competitionmanager.service.competition
 
 import com.deathstar.competitionmanager.domain.Competition
+import com.deathstar.competitionmanager.domain.CompetitionCategory
 import com.deathstar.competitionmanager.domain.GeneratedGrid
 import com.deathstar.competitionmanager.domain.RegistratedSportsman
 import com.deathstar.competitionmanager.domain.RegistrationStatus
@@ -8,6 +9,7 @@ import com.deathstar.competitionmanager.domain.user.User
 import com.deathstar.competitionmanager.domain.user.UserRole
 import com.deathstar.competitionmanager.exception.EntityNotFoundException
 import com.deathstar.competitionmanager.security.CurrentUserResolver
+import com.deathstar.competitionmanager.service.category.CompetitionCategoryService
 import com.deathstar.competitionmanager.service.grid.CompetitionCategoryGridService
 import com.deathstar.competitionmanager.service.grid.GeneratedGridService
 import com.deathstar.competitionmanager.service.mail.MailService
@@ -30,6 +32,9 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
 
     @Autowired
     CompetitionService competitionService
+
+    @Autowired
+    CompetitionCategoryService competitionCategoryService
 
     @Autowired
     CompetitionConverter competitionConverter
@@ -98,14 +103,18 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
 
         if (fillCategorisMeta) {
             List<RegistratedSportsman> allSporstmensOnCurrentCompetition = registratedSportsmanService.findSportsmanByCompetitionId(competitionView.id)
-            Map<Integer, List<RegistratedSportsman>> sporstmanByCategoryId = allSporstmensOnCurrentCompetition.groupBy { it.competitionCategory.id }
+            Map<Integer, List<RegistratedSportsman>> sporstmanByCategoryId = allSporstmensOnCurrentCompetition.groupBy {
+                it.competitionCategory.id
+            }
 
             competitionView.categories.forEach { category ->
                 List<RegistratedSportsman> sporstamInCategory = sporstmanByCategoryId.getOrDefault(category.id, [])
 
                 category.sportsmanMeta = new CompetitionCategorySportsmanMeta(
                         totalSportsmanCount: sporstamInCategory.size(),
-                        sportsmanFromCoachClubCount: sporstamInCategory.findAll { it.clubName == currentUser.clubName }.size()
+                        sportsmanFromCoachClubCount: sporstamInCategory.findAll {
+                            it.clubName == currentUser.clubName
+                        }.size()
                 )
             }
         }
@@ -173,5 +182,25 @@ class CompetitionViewServiceImpl implements CompetitionViewService {
             zipFile.delete()
             return new Tuple2<File, CompetitionView>(zipFile, competitionConverter.convertToView(competition))
         }
+    }
+
+    @Override
+    CompetitionView attachCategoriesToCompetition(Integer categoryId, List<Integer> categoriesIds) {
+        Competition competition = competitionService.findById(categoryId)
+        if (!competition) {
+            throw new EntityNotFoundException()
+        }
+
+        List<CompetitionCategory> foundCategoris = competitionCategoryService.findByIds(categoriesIds)
+
+        if (foundCategoris.size() != categoriesIds.unique().size()) {
+            throw new RuntimeException("Some present ids not exist")
+        }
+
+        competition.categories = (foundCategoris + competition.categories).unique()
+        Competition updatedCompetition = competitionService.update(competition)
+        CompetitionView updatedCompetitionView = competitionConverter.convertToView(updatedCompetition)
+        fillCompetitionMetaInCompetition(currentUserResolver.currentUser, updatedCompetitionView, true)
+        return updatedCompetitionView
     }
 }

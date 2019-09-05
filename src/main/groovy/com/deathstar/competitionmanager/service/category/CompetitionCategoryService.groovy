@@ -17,4 +17,6 @@ interface CompetitionCategoryService {
     List<CompetitionCategory> bulkUpdate(List<CompetitionCategory> competitionCategories)
 
     List<String> getSections()
+
+    List<CompetitionCategory> findByIds(List<Integer> ids)
 }

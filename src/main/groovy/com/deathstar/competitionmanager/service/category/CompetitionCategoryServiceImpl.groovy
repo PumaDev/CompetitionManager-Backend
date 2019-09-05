@@ -46,4 +46,9 @@ class CompetitionCategoryServiceImpl implements CompetitionCategoryService {
     List<String> getSections() {
         return competitionCategoryRepository.findDistinctSections()
     }
+
+    @Override
+    List<CompetitionCategory> findByIds(List<Integer> ids) {
+        return competitionCategoryRepository.findAll(ids)
+    }
 }

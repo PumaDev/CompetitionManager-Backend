@@ -27,4 +27,6 @@ interface CompetitionViewService {
     List<CompetitionCategoryView> getCategoriesByCompetitionId(Integer competitionId)
 
     Tuple2<File, CompetitionView> generateGrids(Integer competitionId)
+
+    CompetitionView attachCategoriesToCompetition(Integer categoryId, List<Integer> categoriesIds)
 }
