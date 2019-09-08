@@ -13,6 +13,10 @@ interface RegistratedSportsmanService {
 
     List<RegistratedSportsman> findSportsmanByCompetitionId(Integer competitionId)
 
+    List<RegistratedSportsman> findSportsmanByClubName(String clubName)
+
+    List<RegistratedSportsman> bulkUpdate(List<RegistratedSportsman> sportsman)
+
     List<RegistratedSportsman> findSportsmenByClubNameAndCompetitionId(String clubName, Integer competitionId)
 
     List<RegistratedSportsman> findSportsmenByCompetitionIdAndCategoryId(Integer competitionId, Integer categoryId)

@@ -4,4 +4,5 @@ class UpdateUserView {
     Integer id
     String login
     String mail
+    String clubName
 }

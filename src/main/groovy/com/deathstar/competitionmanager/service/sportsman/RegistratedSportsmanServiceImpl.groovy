@@ -32,6 +32,16 @@ class RegistratedSportsmanServiceImpl implements RegistratedSportsmanService {
     }
 
     @Override
+    List<RegistratedSportsman> findSportsmanByClubName(String clubName) {
+        return registratedSportsmanRepository.findRegistratedSportsmansByClubName(clubName)
+    }
+
+    @Override
+    List<RegistratedSportsman> bulkUpdate(List<RegistratedSportsman> sportsman) {
+        return registratedSportsmanRepository.save(sportsman)
+    }
+
+    @Override
     List<RegistratedSportsman> findSportsmenByClubNameAndCompetitionId(String clubName, Integer competitionId) {
         return registratedSportsmanRepository.findRegistratedSportsmansByClubNameAndCompetitionId(clubName, competitionId)
     }

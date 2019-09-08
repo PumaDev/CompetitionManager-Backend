@@ -1,5 +1,6 @@
 package com.deathstar.competitionmanager.controller
 
+import com.deathstar.competitionmanager.view.StatusView
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -12,6 +13,3 @@ class StatusController {
     }
 }
 
-class StatusView {
-    String status
-}

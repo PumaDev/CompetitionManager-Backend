@@ -41,7 +41,8 @@ class UserConverter {
         return new User(
                 id: updateUserView.id,
                 login: updateUserView.login,
-                mail: updateUserView.mail
+                mail: updateUserView.mail,
+                clubName: updateUserView.clubName
         )
     }
 }
