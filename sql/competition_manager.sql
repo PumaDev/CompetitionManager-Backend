@@ -83,3 +83,12 @@ CREATE TABLE `generated_grid` (
     `created_date` TIMESTAMP,
     primary key (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `attachment` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `competition_id` int(10) NOT NULL,
+    `attachment_name` VARCHAR(255) NOT NULL,
+    `content_link` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `attachment_to_competition_const` FOREIGN KEY (`competition_id`) REFERENCES `competition` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
