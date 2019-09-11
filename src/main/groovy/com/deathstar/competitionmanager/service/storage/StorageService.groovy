@@ -4,7 +4,9 @@ interface StorageService {
 
     String saveContent(String type, InputStream contentInputStream, String path)
 
-    String getContent(String type, String path)
+    InputStream getContent(String type, String path)
 
-    void batchDelete(String type, List<String> paths)
+    void batchDeleteContent(String type, List<String> paths)
+
+    void deleteContent(String type, String path)
 }

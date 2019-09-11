@@ -88,6 +88,7 @@ CREATE TABLE `attachment` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `competition_id` int(10) NOT NULL,
     `attachment_name` VARCHAR(255) NOT NULL,
+    `file_name` VARCHAR(255) NOT NULL,
     `content_link` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `attachment_to_competition_const` FOREIGN KEY (`competition_id`) REFERENCES `competition` (`id`)

@@ -15,7 +15,10 @@ class Attachment {
     Integer competitionId
 
     @Column(name = 'attachment_name', nullable = false)
-    String attachmentName
+    String name
+
+    @Column(name = 'file_name', nullable = false)
+    String fileName
 
     @Column(name = 'content_link', nullable = false)
     String contentLink
