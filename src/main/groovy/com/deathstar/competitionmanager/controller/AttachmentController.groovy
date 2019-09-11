@@ -1,5 +1,7 @@
 package com.deathstar.competitionmanager.controller
 
+import com.deathstar.competitionmanager.domain.user.UserRole
+import com.deathstar.competitionmanager.security.SecurityEndpoint
 import com.deathstar.competitionmanager.service.attachment.AttachmentViewService
 import com.deathstar.competitionmanager.view.StatusView
 import com.deathstar.competitionmanager.view.attachment.AttachmentView
@@ -24,6 +26,7 @@ class AttachmentController {
     @Autowired
     AttachmentViewService attachmentViewService
 
+    @SecurityEndpoint(rolesHasAccess = [UserRole.ADMIN, UserRole.DEVELOPER])
     @PostMapping("/v1/competitions/{competitionId}/attachments")
     AttachmentView createAttachment(@PathVariable('competitionId') Integer competitionId,
                                     @RequestParam("name") String name,
@@ -32,6 +35,7 @@ class AttachmentController {
         attachmentViewService.createAttachment(createAttachmentView, attachmentContent)
     }
 
+    @SecurityEndpoint
     @GetMapping('/v1/competitions/{competitionId}/attachments')
     List<AttachmentView> findAttachmentsByCompetition(@PathVariable('competitionId') Integer competitionId) {
         return attachmentViewService.findAttachmentsByCompetitionId(competitionId)
@@ -51,6 +55,7 @@ class AttachmentController {
         return new ResponseEntity<InputStreamResource>(content, httpHeaders, HttpStatus.OK)
     }
 
+    @SecurityEndpoint(rolesHasAccess = [UserRole.ADMIN])
     @DeleteMapping('/v1/competitions/{competitionId}/attachments/{attachmentId}')
     StatusView deleteAttachmentById(@PathVariable('attachmentId') Integer attachmentId) {
         attachmentViewService.deleteAttachmentById(attachmentId)
