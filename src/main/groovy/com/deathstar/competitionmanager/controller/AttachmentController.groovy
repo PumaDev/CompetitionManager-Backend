@@ -29,8 +29,8 @@ class AttachmentController {
     @SecurityEndpoint(rolesHasAccess = [UserRole.ADMIN, UserRole.DEVELOPER])
     @PostMapping("/v1/competitions/{competitionId}/attachments")
     AttachmentView createAttachment(@PathVariable('competitionId') Integer competitionId,
-                                    @RequestParam("name") String name,
-                                    MultipartFile attachmentContent) {
+                                    @RequestParam('name') String name,
+                                    @RequestParam('file') MultipartFile attachmentContent) {
         CreateAttachmentView createAttachmentView = new CreateAttachmentView(competitionId: competitionId, attachmentName: name)
         attachmentViewService.createAttachment(createAttachmentView, attachmentContent)
     }
