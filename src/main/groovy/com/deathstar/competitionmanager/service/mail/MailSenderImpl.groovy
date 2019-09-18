@@ -22,7 +22,7 @@ class MailSenderImpl implements MailSender {
     @Value('${competition-manager.mails.login}')
     String fromMailAccount
 
-    @Value('${competition-manager.mails.type:text/html}')
+    @Value('${competition-manager.mails.type:text/html;charset=utf8}')
     String mailType
 
     @Autowired
