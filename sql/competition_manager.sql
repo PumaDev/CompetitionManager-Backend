@@ -93,3 +93,20 @@ CREATE TABLE `attachment` (
     PRIMARY KEY (`id`),
     CONSTRAINT `attachment_to_competition_const` FOREIGN KEY (`competition_id`) REFERENCES `competition` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `mail_template` (
+    `id` INT(10) NOT NULL AUTO_INCREMENT,
+    `key_name` VARCHAR(255) NOT NULL,
+    `template` LONGTEXT NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `mail_template_replacement` (
+	`id` INT(10) NOT NULL AUTO_INCREMENT,
+    `mail_template_id` INT(10) NOT NULL,
+    `key` VARCHAR(255) NOT NULL,
+    `field_name` VARCHAR(255) NOT NULL,
+	PRIMARY KEY (`id`),
+    CONSTRAINT `mail_template_id_const` FOREIGN KEY (`mail_template_id`) REFERENCES `mail_template` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
