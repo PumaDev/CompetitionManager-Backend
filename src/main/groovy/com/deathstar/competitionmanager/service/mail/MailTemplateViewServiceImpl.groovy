@@ -18,7 +18,7 @@ class MailTemplateViewServiceImpl implements MailTemplateViewService {
 
     @Override
     List<MailTemplateView> readAllMailTemplates() {
-        List<MailTemplate> allMailTemplates = mailTemplateService.findAll()
+        List<MailTemplate> allMailTemplates = mailTemplateService.readAllMailTemplates()
         return mailTemplateConverter.convertListMailTemplatesToViews(allMailTemplates)
     }
 
