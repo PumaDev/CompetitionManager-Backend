@@ -1,6 +1,8 @@
 package com.deathstar.competitionmanager.service.mail
 
+
 import com.deathstar.competitionmanager.domain.mail.MailTemplate
+import com.deathstar.competitionmanager.domain.mail.MailTemplateReplacement
 import com.deathstar.competitionmanager.exception.EntityNotFoundException
 import com.deathstar.competitionmanager.view.mail.MailTemplateView
 import com.deathstar.competitionmanager.view.mail.UpdateTemplateInMailTemplateView
@@ -15,6 +17,9 @@ class MailTemplateViewServiceImpl implements MailTemplateViewService {
 
     @Autowired
     MailTemplateConverter mailTemplateConverter
+
+    @Autowired
+    MailTemplateReplacementService mailTemplateReplacementService
 
     @Override
     List<MailTemplateView> readAllMailTemplates() {
@@ -54,8 +59,22 @@ class MailTemplateViewServiceImpl implements MailTemplateViewService {
             throw new EntityNotFoundException("MailTemplate with id ${mailTemplateViewWithUpdates.id} was not found")
         }
         MailTemplate mailTemplateWithUpdates = mailTemplateConverter.convertMailTemplateViewToMailTemplate(mailTemplateViewWithUpdates)
+        mergeReplacements(mailTemplateWithUpdates, foundMailTemplate)
         MailTemplate updatedMailTemplate = mailTemplateService.updateMailTemplate(mailTemplateWithUpdates)
         return mailTemplateConverter.convertMailTemplateToView(updatedMailTemplate)
+    }
+
+    void mergeReplacements(MailTemplate toUpdate, MailTemplate existed) {
+        Map<String, MailTemplateReplacement> replacementsByKey = existed.mailTemplateReplacements.collectEntries { [(it.key): it] }
+        toUpdate.mailTemplateReplacements.each { it.id = replacementsByKey[it.key]?.id }
+
+        List<MailTemplateReplacement> toSave = toUpdate.mailTemplateReplacements.findAll { !it.id }.toList()
+        List<MailTemplateReplacement> saved = mailTemplateReplacementService.bulkSave(toSave)
+
+        Map<Integer, MailTemplateReplacement> allNewReplacementsById = toUpdate.mailTemplateReplacements.collectEntries { [(it.id): it] }
+
+        Set<MailTemplateReplacement> toDelete = existed.mailTemplateReplacements.findAll { allNewReplacementsById[it.id] == null }
+        mailTemplateReplacementService.bulkDelete(toDelete.toList())
     }
 
     @Override

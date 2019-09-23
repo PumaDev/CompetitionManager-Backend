@@ -19,5 +19,5 @@ class MailTemplate {
     String template
 
     @OneToMany(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, mappedBy = 'mailTemplate')
-    Set<MailTemplateReplacment> mailTemplateReplacements = new HashSet<>()
+    Set<MailTemplateReplacement> mailTemplateReplacements = new HashSet<>()
 }

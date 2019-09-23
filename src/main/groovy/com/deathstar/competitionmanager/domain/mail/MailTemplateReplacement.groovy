@@ -11,14 +11,14 @@ import javax.persistence.Table
 
 @Entity()
 @Table(name = 'mail_template_replacement')
-class MailTemplateReplacment {
+class MailTemplateReplacement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = 'id', nullable = false)
     Integer id
 
-    @Column(name = 'key', nullable = false)
+    @Column(name = '`key`', nullable = false)
     String key
 
     @Column(name = 'field_name', nullable = false)
