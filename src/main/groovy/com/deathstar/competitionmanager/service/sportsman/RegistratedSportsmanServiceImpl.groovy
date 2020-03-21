@@ -13,7 +13,7 @@ class RegistratedSportsmanServiceImpl implements RegistratedSportsmanService {
 
     @Override
     RegistratedSportsman create(RegistratedSportsman sportsman) {
-            return registratedSportsmanRepository.save(sportsman)
+        return registratedSportsmanRepository.save(sportsman)
     }
 
     @Override

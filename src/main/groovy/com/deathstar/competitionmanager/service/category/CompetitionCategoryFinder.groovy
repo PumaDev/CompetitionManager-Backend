@@ -6,5 +6,5 @@ import com.deathstar.competitionmanager.view.sportsman.CreateRegistratedSportsma
 
 interface CompetitionCategoryFinder {
 
-    CompetitionCategory findCompetitionCategoryForSportsman(CreateRegistratedSportsmanView sportsman)
+    CompetitionCategory findCompetitionCategoryForSportsman(RegistratedSportsman sportsman)
 }

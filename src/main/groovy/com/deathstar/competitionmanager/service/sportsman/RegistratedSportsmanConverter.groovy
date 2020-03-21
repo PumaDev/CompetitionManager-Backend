@@ -37,6 +37,7 @@ class RegistratedSportsmanConverter {
                 male: createView.male,
                 experience: createView.experience,
                 coach: createView.coach,
+                section: createView.section,
                 competitionId: createView.competitionId)
     }
 

@@ -36,6 +36,9 @@ class RegistratedSportsman {
     @Column(name = 'competition_id', nullable = false)
     Integer competitionId
 
+    @Column(name = 'section', nullable = false)
+    String section
+
     @Column(name = 'coach', nullable = false)
     String coach
 

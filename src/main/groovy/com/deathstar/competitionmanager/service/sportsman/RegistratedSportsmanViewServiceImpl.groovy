@@ -40,12 +40,12 @@ class RegistratedSportsmanViewServiceImpl implements RegistratedSportsmanViewSer
             throw new RegistrationClosedException(competitionId)
         }
         RegistratedSportsman registratedSportsman = registratedSportsmanConverter.convertToDto(createRegistratedSportsmanView)
-        CompetitionCategory suitableCategory = competitionCategoryFinder.findCompetitionCategoryForSportsman(createRegistratedSportsmanView)
+        registratedSportsman.competitionId = competitionId
+        CompetitionCategory suitableCategory = competitionCategoryFinder.findCompetitionCategoryForSportsman(registratedSportsman)
         if (!suitableCategory) {
             throw new NotFoundSuitableCategoryException()
         }
         registratedSportsman.competitionCategory = suitableCategory
-        registratedSportsman.competitionId = competitionId
         registratedSportsman.clubName = currentUserResolver.getCurrentUser().clubName
         RegistratedSportsman createdRegistratedSportsman = registratedSportsmanService.create(registratedSportsman)
         return registratedSportsmanConverter.convertToView(createdRegistratedSportsman)

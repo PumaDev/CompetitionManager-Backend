@@ -9,6 +9,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy
 class ServerRunner {
 
     static def main(args) {
-        SpringApplication.run(ServerRunner)
+        SpringApplication.run(ServerRunner, args)
     }
 }

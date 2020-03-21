@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct
 @Component
 final class FileWriterConfig {
 
-    static final String TEMP_DIRECTORY = System.getProperty('java.io.tmpdir')
+    static final String TEMP_DIRECTORY = System.getProperty('java.io.tmpdir').endsWith(File.separator) ? System.getProperty('java.io.tmpdir') : System.getProperty('java.io.tmpdir') + File.separator
 
     @Value('${com.ds.competition-manager.grid-generation.temp-directory-name:competition-manager-grids}')
     String directoryName
